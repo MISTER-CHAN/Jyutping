@@ -167,7 +167,7 @@ namespace Jyutping
                     case "shyyp.net":
                         html = GetHTML("https://shyyp.net/search?q=" + s);
                         prons = Regex.Matches(html, "(?<=<span class=\"PSX PS_jyutping pl-2 pr-1\">)[a-z1-6]+(?=</span>)").Cast<Match>().Select(m => m.Value).ToArray();
-                        explains = Regex.Matches(html, "(?<=<ul class=\"my-2\"><li>).+?(?=</li></ul>)|(?<=\\\"result\\\":{).+?(?=})").Cast<Match>().Select(m => Regex.Replace(Regex.Replace(m.Value, "\"[0-9a-z_]+\":|[01],|null,?|\" \",", ""), "^\"|\"$", "")).ToArray();
+                        explains = Regex.Matches(html, "(?<=<ul class=\"my-2\"><li>).+?(?=</li></ul>)|(?<=\\\"result\\\":{).+?(?=})").Cast<Match>().Select(m => Regex.Replace(Regex.Replace(m.Value, "\"[0-9a-z_]+\":\"?|[01],|null,?|\" \",|\",", ""), "^\"|\"$", "")).ToArray();
                         break;
                 }
                 if (html == "")
