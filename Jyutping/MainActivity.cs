@@ -132,7 +132,7 @@ namespace Jyutping
             
             sUrl.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerDropDownItem, new string[]
             {
-                 "shyyp.net", "cuhk.edu.hk"
+                 "cuhk.edu.hk", "shyyp.net"
             });
             sSchema.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerDropDownItem, new string[]
             {
@@ -166,7 +166,7 @@ namespace Jyutping
                         break;
                     case "shyyp.net":
                         html = GetHTML("https://shyyp.net/search?q=" + s);
-                        prons = Regex.Matches(html, "(?<=<span class=\"PSX PS_jyutping pl-2 pr-1\">)[a-z1-6]+(?=</span>)").Cast<Match>().Select(m => m.Value).ToArray();
+                        prons = Regex.Matches(html, "(?<=<span class=\"PSX  text-xl pl-2 pr-1 py-2 PS_jyutping \">)[a-z1-6]+(?=</span>)").Cast<Match>().Select(m => m.Value).ToArray();
                         explains = Regex.Matches(html, "(?<=<ul class=\"my-2\"><li>).+?(?=</li></ul>)|(?<=\\\"result\\\":{).+?(?=})").Cast<Match>().Select(m => Regex.Replace(Regex.Replace(m.Value, "\"[0-9a-z_]+\":\"?|[01],|null,?|\" \",|\",", ""), "^\"|\"$", "")).ToArray();
                         break;
                 }
