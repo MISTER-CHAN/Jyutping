@@ -186,9 +186,10 @@ namespace Jyutping
                     switch (schema)
                     {
                         case "粵拼":
+                            prons = prons.Cast<string>().Select(s => s + " " + JyutpingToIpa(s)).ToArray();
                             break;
                         case "Latina":
-                            prons = prons.Cast<string>().Select(s => JyutpingToLatina(s)).ToArray();
+                            prons = prons.Cast<string>().Select(s => JyutpingToLatina(s) + " " + JyutpingToIpa(s)).ToArray();
                             break;
                         case "IPA":
                             prons = prons.Cast<string>().Select(s => JyutpingToIpa(s)).ToArray();
