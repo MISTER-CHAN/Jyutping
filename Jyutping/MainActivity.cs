@@ -257,22 +257,19 @@ namespace Jyutping
                         switch (url)
                         {
                             case "shyyp.net":
-                                html = GetHTML("https://shyyp.net/search?q=" + page);
-                                string[] chars = html.Split("<div class=\"ml-2 mr-2 mb-0  py-1 bg-");
-                                List<string> ls = chars.ToList();
-                                ls.RemoveAt(0);
-                                chars = ls.ToArray();
+                                html = Regex.Match(GetHTML("https://shyyp.net/search?q=" + page), "<div class=\"ml-2 mr-2 mb-0  py-1 bg-green-100\">.+?(?=<div class=\"ml-2 mr-2 mb-0  bg-gray-100 \">)").Value;
+                                string[] chars = Regex.Matches(html, "<div class=\"ml-2 mr-2 mb-0  py-1 bg-[a-z]+?-100\">.+?</div>(?=(<div class=\"ml-2 mr-2 mb-0  py-1 bg-[a-z]+?-100\">)|$)").Cast<Match>().Select(m => m.Value).ToArray();
                                 prons = new Array[chars.Length];
                                 for (character = 0; character < chars.Length; character++)
                                 {
-                                    prons[character] = Regex.Matches(chars[character], "(?<=<span class=\"PSX PS_jyutping pl-2 pr-1\">)[a-z1-6]+(?=</span>)").Cast<Match>().Select(m => m.Value).ToArray();
+                                    prons[character] = Regex.Matches(chars[character], "(?<=<span class=\"PSX  text-xl pl-2 pr-1 py-2 PS_jyutping \">)[a-z1-6]+(?=</span>)").Cast<Match>().Select(m => m.Value).ToArray();
                                 }
                                 break;
                             case "cuhk.edu.hk":
                                 string c = string.Join("", Encoding.GetEncoding("big5").GetBytes(page).Cast<byte>().Select(b => "%" + b.ToString("X2")));
                                 html = GetHTML("https://humanum.arts.cuhk.edu.hk/Lexis/lexi-can/search.php?q=" + c, "big5");
                                 prons = new Array[1];
-                                prons[0] = Regex.Matches(html, "(?<=<span class=\"PSX PS_jyutping pl-2 pr-1\">)[a-z1-6]+(?=</span>)").Cast<Match>().Select(m => "\n" + m.Value).ToArray();
+                                prons[0] = Regex.Matches(html, "(?<=\"sound\\.php\\?s=)[a-z1-6]+(?=\")").Cast<Match>().Select(m => m.Value).ToArray();
                                 break;
                         }
                     }
